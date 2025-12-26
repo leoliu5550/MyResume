@@ -11,7 +11,6 @@ const queryClient = new QueryClient();
 
 const App = () => {
   useEffect(() => {
-    // Set dark mode by default
     document.documentElement.classList.add("dark");
   }, []);
 
@@ -20,10 +19,10 @@ const App = () => {
       <TooltipProvider>
         <Toaster />
         <Sonner />
-        <BrowserRouter>
+        {/* 修改這裡：加入 basename */}
+        <BrowserRouter basename={import.meta.env.BASE_URL}>
           <Routes>
             <Route path="/" element={<Index />} />
-            {/* ADD ALL CUSTOM ROUTES ABOVE THE CATCH-ALL "*" ROUTE */}
             <Route path="*" element={<NotFound />} />
           </Routes>
         </BrowserRouter>
