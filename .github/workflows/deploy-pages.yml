@@ -27,10 +27,22 @@ jobs:
         run: npm ci
 
       - name: Build
-        run: npm run build
+        run: |
+          echo "Using VITE_BASE=$VITE_BASE"
+          npm run build -- --base $VITE_BASE
         env:
-          VITE_BASE: /MyResume/
+          VITE_BASE: /${{ github.event.repository.name }}/
           
+      - name: Show built index and env
+        run: |
+          echo "GITHUB_REPOSITORY=$GITHUB_REPOSITORY"
+          echo "GITHUB_REPOSITORY_NAME=${{ github.event.repository.name }}"
+          echo "VITE_BASE=$VITE_BASE"
+          echo "----- dist/index.html (head) -----"
+          sed -n '1,120p' dist/index.html || true
+          echo "----- dist assets list -----"
+          ls -la dist | sed -n '1,80p'
+
       - name: Configure Pages
         uses: actions/configure-pages@v5
         with:
